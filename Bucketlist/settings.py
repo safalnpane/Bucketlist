@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import environ
@@ -59,6 +60,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Bucketlist.wsgi.application'
+
 
 DATABASES = {
     'default': {
