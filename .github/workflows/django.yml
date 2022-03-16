@@ -1,0 +1,48 @@
+name: Django CI
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+# Jobs
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: bucketlist
+          POSTGRES_PASSWORD: bucketlist
+          POSTGRES_DB: bucketlist
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python Environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install --system
+      - name: Run Migration
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_USER: bucketlist
+          DATABASE_PASS: bucketlist
+          DATABASE_NAME: bucketlist
+          SECRET_KEY: This-is-not-a-very-secure-key
+        run: python manage.py migrate
+      - name: Run Test
+        run: python manage.py test
