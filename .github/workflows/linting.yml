@@ -37,5 +37,5 @@ jobs:
       - name: Lint with flake8
         run: pipenv run flake8 --count --show-source --statistics
       - name: Lint with Pylint users app
-        run: pipenv run pylint users accounts
+        run: pipenv run pylint buckets
 
