@@ -3,12 +3,10 @@ name: Python Linting
 on:
   pull_request:
     branches:
-      - develop
       - master
   push:
     branches:
       - master
-      - develop
 
 # Jobs
 jobs:
@@ -28,6 +26,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install pipenv
           pipenv install --dev
+      - name: Create env file
+        run: |
+          touch Bucketlist/.env
+          echo "DATABASE_HOST=localhost" >> Bucketlist/.env
+          echo "DATABASE_USER=bucketlist" >> Bucketlist/.env
+          echo "DATABASE_PASS=bucketlist" >> Bucketlist/.env
+          echo "DATABASE_NAME=bucketlist" >> Bucketlist/.env
+          echo "SECRET_KEY=This-is-not-a-very-secure-key" >> Bucketlist/.env
       - name: Lint with flake8
         run: pipenv run flake8 --count --show-source --statistics
       - name: Lint with Pylint users app
